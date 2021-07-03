@@ -1,0 +1,86 @@
+{% block script %}
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+	$(function(){
+		$(".trainName").autocomplete({
+			source: "/trains/linename_autocomplete/",
+			minLength: 2,
+		});
+	});
+	</script>
+	<style type="text/css">
+	#stations{
+	width: 500px;
+	color: #000000;
+	padding:0px;
+	display: table;
+	border: 1px solid black;
+	}
+	#row  {
+	display: table-row;
+	}
+	#stationID {
+	padding:0px;
+	width: 100px;
+	background:#FFFFFF;
+	border: 1px solid black;
+	display: table-cell;
+	}
+	#stationNameEng {
+	padding:0px;
+	width: 200px;
+	background:#FFFFFF;
+	border: 1px solid black;
+	display: table-cell;
+	}
+	#stationName {
+	padding:0px;
+	width: 200px;
+	background:#FFFFFF;
+	border: 1px solid black;
+	display: table-cell;
+	}
+	</style>
+{% endblock %}
+
+<div class="ui-widget">
+	<form method="get" action="{% url 'trains:index' %}">{% csrf_token %}
+	<label for="train">鉄道名	:</label>
+	<input id="train" class="trainName" name="name">
+	<input type="submit" value="表示">
+	</form>
+</div>
+<br>
+{% if station_list %}
+<div>
+	<p>{{ request.GET.name }}の線路</p>
+	<p><div id=stations>
+	<div id=row><div id=stationID>駅ID</div><div id=stationName>駅名</div><div id=stationNameEng>駅名（ENG）</div></div>
+	{% for station in station_list %}
+	{{ station |safe }}
+	{% endfor %}
+	</div></p>
+</div>
+{% elif 'name' in request.GET %}
+	<p>{{ request.GET.name }}の検索結果</p>
+	<p>No data.</p>
+{% endif %}
+<div>
+	※pykakasiを活用し漢字、英字、ひらかな、カタカナにも対応<br>
+	以下の線路がアップデータされました。<br>
+	・東葉高速線<br>
+	・多摩線<br>
+	・江ノ島線<br>
+	・小田原線<br>
+	・成田スカイアクセス線<br>
+	・千葉線<br>
+	・東成田線<br>
+	・金町線<br>
+	・京成本線<br>
+	・押上線<br>
+</div>
+
+
+
